@@ -1,5 +1,7 @@
 package com.lalosapps.listadapter
 
+import kotlin.random.Random
+
 object CardProvider {
 
     var cards = listOf(
@@ -72,6 +74,13 @@ object CardProvider {
 
     fun deleteCard(card: CardItem): List<CardItem> {
         cards = cards.filterNot { card == it }
+        return cards
+    }
+
+    fun insertCard(): List<CardItem> {
+        val id = Random.nextInt()
+        val newCard = CardItem(id, "Title $id", "Description $id", false)
+        cards = cards + newCard
         return cards
     }
 }

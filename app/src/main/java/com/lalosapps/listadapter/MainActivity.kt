@@ -30,5 +30,11 @@ class MainActivity : AppCompatActivity() {
             submitList(CardProvider.cards)
         }
         binding.recycler.adapter = adapter
+
+        binding.addCardFab.setOnClickListener {
+            val newList = CardProvider.insertCard()
+            adapter.submitList(newList)
+            binding.recycler.smoothScrollToPosition(newList.lastIndex)
+        }
     }
 }
