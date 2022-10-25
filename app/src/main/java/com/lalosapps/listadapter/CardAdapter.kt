@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lalosapps.listadapter.databinding.CardItemBinding
 
 class CardAdapter(
-    val onCardClicked: (CardItem) -> Unit
+    val onCardClicked: (CardItem) -> Unit,
+    val onFavoriteToggled: (CardItem) -> Unit
 ) : ListAdapter<CardItem, CardAdapter.CardViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
@@ -25,6 +26,7 @@ class CardAdapter(
             bind(card)
             binding.apply {
                 root.setOnClickListener { onCardClicked(card) }
+                icon.setOnClickListener { onFavoriteToggled(card) }
             }
         }
     }

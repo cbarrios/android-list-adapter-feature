@@ -17,6 +17,10 @@ class MainActivity : AppCompatActivity() {
         adapter = CardAdapter(
             onCardClicked = {
                 binding.root.snack(it.title)
+            },
+            onFavoriteToggled = {
+                val updatedList = CardProvider.toggleFavorite(it)
+                adapter.submitList(updatedList)
             }
         ).apply {
             submitList(CardProvider.cards)

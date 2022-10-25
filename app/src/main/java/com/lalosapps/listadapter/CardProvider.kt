@@ -2,7 +2,7 @@ package com.lalosapps.listadapter
 
 object CardProvider {
 
-    val cards = listOf(
+    var cards = listOf(
         CardItem(
             1,
             "Title 1",
@@ -64,4 +64,9 @@ object CardProvider {
             false
         )
     )
+
+    fun toggleFavorite(card: CardItem): List<CardItem> {
+        cards = cards.map { if (card == it) it.copy(favorite = !it.favorite) else it }
+        return cards
+    }
 }
