@@ -14,7 +14,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = CardAdapter().apply {
+        adapter = CardAdapter(
+            onCardClicked = {
+                binding.root.snack(it.title)
+            }
+        ).apply {
             submitList(CardProvider.cards)
         }
         binding.recycler.adapter = adapter

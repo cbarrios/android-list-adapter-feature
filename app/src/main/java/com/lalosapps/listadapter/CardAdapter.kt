@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.lalosapps.listadapter.databinding.CardItemBinding
 
-class CardAdapter : ListAdapter<CardItem, CardAdapter.CardViewHolder>(DiffCallback) {
+class CardAdapter(
+    val onCardClicked: (CardItem) -> Unit
+) : ListAdapter<CardItem, CardAdapter.CardViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         return CardViewHolder(
@@ -19,7 +21,12 @@ class CardAdapter : ListAdapter<CardItem, CardAdapter.CardViewHolder>(DiffCallba
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         val card = getItem(position)
-        holder.bind(card)
+        with(holder) {
+            bind(card)
+            binding.apply {
+                root.setOnClickListener { onCardClicked(card) }
+            }
+        }
     }
 
     object DiffCallback : DiffUtil.ItemCallback<CardItem>() {
