@@ -18,6 +18,10 @@ class MainActivity : AppCompatActivity() {
             onCardClicked = {
                 binding.root.snack(it.title)
             },
+            onCardLongClicked = {
+                val newList = CardProvider.deleteCard(it)
+                adapter.submitList(newList)
+            },
             onFavoriteToggled = {
                 val updatedList = CardProvider.toggleFavorite(it)
                 adapter.submitList(updatedList)

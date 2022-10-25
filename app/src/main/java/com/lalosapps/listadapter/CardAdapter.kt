@@ -10,6 +10,7 @@ import com.lalosapps.listadapter.databinding.CardItemBinding
 
 class CardAdapter(
     val onCardClicked: (CardItem) -> Unit,
+    val onCardLongClicked: (CardItem) -> Unit,
     val onFavoriteToggled: (CardItem) -> Unit
 ) : ListAdapter<CardItem, CardAdapter.CardViewHolder>(DiffCallback) {
 
@@ -26,6 +27,10 @@ class CardAdapter(
             bind(card)
             binding.apply {
                 root.setOnClickListener { onCardClicked(card) }
+                root.setOnLongClickListener {
+                    onCardLongClicked(card)
+                    true
+                }
                 icon.setOnClickListener { onFavoriteToggled(card) }
             }
         }

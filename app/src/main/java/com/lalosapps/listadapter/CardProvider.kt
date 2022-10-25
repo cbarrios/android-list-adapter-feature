@@ -69,4 +69,9 @@ object CardProvider {
         cards = cards.map { if (card == it) it.copy(favorite = !it.favorite) else it }
         return cards
     }
+
+    fun deleteCard(card: CardItem): List<CardItem> {
+        cards = cards.filterNot { card == it }
+        return cards
+    }
 }
