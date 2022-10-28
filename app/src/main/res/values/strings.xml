@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">List Adapter</string>
+    <string name="toggle">Toggle</string>
 </resources>

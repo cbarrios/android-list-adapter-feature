@@ -47,4 +47,7 @@ dependencies {
 
     // by viewModels()
     implementation 'androidx.activity:activity-ktx:1.6.1'
+
+    // asLiveData
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
 }

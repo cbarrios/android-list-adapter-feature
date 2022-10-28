@@ -1,10 +1,12 @@
 package com.lalosapps.listadapter
 
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlin.random.Random
 
 object CardProvider {
 
-    var cards = listOf(
+    private var cards = listOf(
         CardItem(
             1,
             "Title 1",
@@ -66,14 +68,23 @@ object CardProvider {
             false
         )
     )
+    
+    private val _cardsFlow = MutableStateFlow(cards)
+    val cardsFlow = _cardsFlow.asStateFlow()
 
-    fun toggleFavorite(card: CardItem): List<CardItem> {
-        cards = cards.map { if (card == it) it.copy(favorite = !it.favorite) else it }
+    fun toggleFavorite(cardId: Int): List<CardItem> {
+        cards = cards.map {
+            if (cardId == it.id) {
+                it.copy(favorite = !it.favorite)
+            } else it
+        }
+        _cardsFlow.value = cards
         return cards
     }
 
     fun deleteCard(card: CardItem): List<CardItem> {
         cards = cards.filterNot { card == it }
+        _cardsFlow.value = cards
         return cards
     }
 
@@ -81,6 +92,7 @@ object CardProvider {
         val id = Random.nextInt()
         val newCard = CardItem(id, "Title $id", "Description $id", false)
         cards = cards + newCard
+        _cardsFlow.value = cards
         return cards
     }
 }

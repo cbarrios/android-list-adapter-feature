@@ -1,5 +1,6 @@
 package com.lalosapps.listadapter
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -18,7 +19,9 @@ class MainActivity : AppCompatActivity() {
 
         adapter = CardAdapter(
             onCardClicked = {
-                binding.root.snack(it.title)
+                val intent = Intent(this, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_ID, it.id)
+                startActivity(intent)
             },
             onCardLongClicked = {
                 viewModel.deleteCard(it)
