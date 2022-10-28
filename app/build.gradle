@@ -50,4 +50,7 @@ dependencies {
 
     // asLiveData
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+
+    // lifecycleScope
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 }

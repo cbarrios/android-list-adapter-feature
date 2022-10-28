@@ -4,7 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.lalosapps.listadapter.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,11 +43,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.cards.observe(this) { cards ->
-            adapter.submitList(cards)
-            if (viewModel.isInsertion) {
-                binding.recycler.smoothScrollToPosition(cards.lastIndex)
-                viewModel.onScrollDone()
+        lifecycleScope.launch {
+            viewModel.cards.flowWithLifecycle(lifecycle).collect { cards ->
+                adapter.submitList(cards)
+                if (viewModel.isInsertion) {
+                    binding.recycler.smoothScrollToPosition(cards.lastIndex)
+                    viewModel.onScrollDone()
+                }
             }
         }
     }

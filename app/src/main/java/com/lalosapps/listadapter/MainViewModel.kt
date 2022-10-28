@@ -1,11 +1,10 @@
 package com.lalosapps.listadapter
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 
 class MainViewModel : ViewModel() {
 
-    val cards = CardProvider.cardsFlow.asLiveData()
+    val cards = CardProvider.cardsFlow
 
     var isInsertion = false
         private set

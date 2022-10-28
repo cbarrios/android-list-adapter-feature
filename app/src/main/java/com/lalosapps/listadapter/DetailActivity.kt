@@ -3,7 +3,10 @@ package com.lalosapps.listadapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.lalosapps.listadapter.databinding.ActivityDetailBinding
+import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
 
@@ -25,10 +28,12 @@ class DetailActivity : AppCompatActivity() {
             viewModel.toggleFavorite(id)
         }
 
-        viewModel.observeCard(id).observe(this) { card ->
-            card?.let {
-                binding.cardItem.text = it.toString()
-                binding.root.snack("Card ${it.id}")
+        lifecycleScope.launch {
+            viewModel.observeCard(id).flowWithLifecycle(lifecycle).collect { card ->
+                card?.let {
+                    binding.cardItem.text = it.toString()
+                    binding.root.snack("Card ${it.id}")
+                }
             }
         }
     }
