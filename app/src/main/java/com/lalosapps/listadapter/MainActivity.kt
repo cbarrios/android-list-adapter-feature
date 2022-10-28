@@ -2,12 +2,14 @@ package com.lalosapps.listadapter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.lalosapps.listadapter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: CardAdapter
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,22 +21,28 @@ class MainActivity : AppCompatActivity() {
                 binding.root.snack(it.title)
             },
             onCardLongClicked = {
-                val newList = CardProvider.deleteCard(it)
-                adapter.submitList(newList)
+                viewModel.deleteCard(it)
             },
             onFavoriteToggled = {
-                val updatedList = CardProvider.toggleFavorite(it)
-                adapter.submitList(updatedList)
+                viewModel.toggleFavorite(it)
             }
-        ).apply {
-            submitList(CardProvider.cards)
-        }
+        )
         binding.recycler.adapter = adapter
 
         binding.addCardFab.setOnClickListener {
-            val newList = CardProvider.insertCard()
-            adapter.submitList(newList)
-            binding.recycler.smoothScrollToPosition(newList.lastIndex)
+            viewModel.insertCard()
+        }
+
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel.cards.observe(this) { cards ->
+            adapter.submitList(cards)
+            if (viewModel.isInsertion) {
+                binding.recycler.smoothScrollToPosition(cards.lastIndex)
+                viewModel.onScrollDone()
+            }
         }
     }
 }
